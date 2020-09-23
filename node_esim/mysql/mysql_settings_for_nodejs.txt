@@ -1,0 +1,52 @@
+mysql client - pääkäyttäjän salasanan luonti:
+
+mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'own-pwd';
+Query OK, 0 rows affected (0.00 sec)
+
+
+Taulun luonti:
+
+mysql> create database nodedemo;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use nodedemo
+Database changed
+
+
+CREATE TABLE Book (
+	bid INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(30) NOT NULL,
+	price DECIMAL,
+	authors VARCHAR(50)
+);
+
+
+mysql> CREATE TABLE Book (
+    -> bid INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    -> name VARCHAR(30) NOT NULL,
+    -> price DECIMAL,
+    -> authors VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> DESC Book;
++---------+-----------------+------+-----+---------+----------------+
+| Field   | Type            | Null | Key | Default | Extra          |
++---------+-----------------+------+-----+---------+----------------+
+| bid     | int(6) unsigned | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(30)     | NO   |     | NULL    |                |
+| price   | decimal(10,0)   | YES  |     | NULL    |                |
+| authors | varchar(50)     | YES  |     | NULL    |                |
++---------+-----------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+Node-ohjelmalla tapahtuneen tietojen lisäämisen jälkeen Taulun sisältö on:
+
+mysql> select * From Book;
++-----+-------------------+-------+----------------------------+
+| bid | name              | price | authors                    |
++-----+-------------------+-------+----------------------------+
+|   6 | Node.js in Action |    45 | Mike Cantelon, Marc Harter |
++-----+-------------------+-------+----------------------------+
+1 row in set (0.00 sec)
+

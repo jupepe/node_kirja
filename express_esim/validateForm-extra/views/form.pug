@@ -1,0 +1,22 @@
+doctype 5
+html
+  head
+    title Page with validation
+  body
+      h1  Page with validation
+      hr
+      form(id='login-form', method='POST', action='/validate-fields')
+        .form-group
+          label(for='name') name
+          input(type='text', name='name',  , class='form-item', id='name', placeholder='Enter name')
+        .form-group
+          label(for='age') age
+          input(type='age', name='age', class='form-item', id='age', placeholder='Enter age')
+        .form-group
+          label(for='weekday') weekday
+          input(type='weekday', name='weekday', class='form-item', id='weekday', placeholder='Enter weekday (mo-fri)')
+        .form-group
+          label(for='email') email
+          input(type='email', name='email', class='form-item', id='email', placeholder='Enter email')
+        .form-group
+          button.btn.btn-default Send  

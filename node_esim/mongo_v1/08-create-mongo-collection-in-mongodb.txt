@@ -1,0 +1,62 @@
+Using mongo shell:
+
+$ mongo
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017
+MongoDB server version: 3.6.3
+> use demos
+switched to db demos
+
+> db
+demos
+
+> db.test_collection.insert({ key: "val" })
+WriteResult({ "nInserted" : 1 })
+
+> show dbs
+admin   0.000GB
+config  0.000GB
+demos   0.000GB
+local   0.000GB
+
+-------------------------------------
+Now create a new database and collection for NodeJs mongo examples: 
+
+> use nodedemos
+switched to db nodedemos
+> show collections
+> db.test_collection.insert({ key: "val" })
+WriteResult({ "nInserted" : 1 })
+
+
+Run NodeJs Mongo client application to insert five records into the collection:
+
+
+$ node 08-mongo-client-v1.js 
+CONNECTED:  mongodb://localhost:27017/demos
+Inserted NaN documents with "_id" {
+  result: [Object],
+  ops: [Array],
+  insertedCount: 5,
+  insertedIds: [Object]
+}
+
+
+And then return back to mongodb to see if all the date has been inserted correctly:
+
+
+> db.devices.find({})
+{ "_id" : ObjectId("5db2bd27c154092957021dff"), "device" : "Webcam", "manufacturer" : "Skalith", "purchaseDate" : "23.06.2011", "price" : 39 }
+{ "_id" : ObjectId("5db2bd27c154092957021e00"), "device" : "Monitor", "manufacturer" : "Roodel", "purchaseDate" : "26.04.2011", "price" : 32 }
+{ "_id" : ObjectId("5db2bd27c154092957021e01"), "device" : "Network card", "manufacturer" : "Twitterbeat", "purchaseDate" : "17.05.2014", "price" : 10 }
+{ "_id" : ObjectId("5db2bd27c154092957021e02"), "device" : "Digital camera", "manufacturer" : "Trilith", "purchaseDate" : "29.12.2013", "price" : 21 }
+{ "_id" : ObjectId("5db2bd27c154092957021e03"), "device" : "Sound Card", "manufacturer" : "Tagchat", "purchaseDate" : "14.07.2012", "price" : 75 }
+
+It is also possible to drop everything from the collection and insert all the recors again:
+
+> db.devices.drop()
+true
+> db.devices.find({})
+
+
+-------------------------------------------

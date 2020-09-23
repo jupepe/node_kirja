@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>students - jQuery Rest client</title>
+<meta charset="UTF-8">
+<style>
+.button {
+    background: #3498db;
+    color: #ffffff;
+    height: 40px;
+    line-height: 40px;
+    text-decoration: none;
+    width: 100px;
+    text-align: center;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+    margin: 10px 10px 10px 10px;
+}
+
+#res {
+   margin: 1px auto;
+   padding: 10px 20px 10px 20px;
+   border: 2px solid black;
+   font-size: 10px;
+}
+
+</style>
+<script
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script>
+$(function () {
+    var getUrl = "http://localhost:3300/api/students";
+    var postUrl = "http://localhost:3300/api/students";
+    var putUrl = "http://localhost:3300/api/students";
+    var deleteUrl = putUrl;
+    var searchUrl = "http://localhost:3300/api/students/course";
+
+    function getAll() {
+        $.get(getUrl).done(function (data) {
+            console.log(data);
+            var out = parseResponse(data);
+            $("#res").html(out);
+        });
+    }
+
+    function searchByCourseName() {
+        var course = $("#courseSearch").val();
+        $.ajax({
+            type : 'GET',
+            url : searchUrl + "/" + course, // append seach parameter to the dynamic URL
+            contentType : "application/json",
+            data: {},
+            dataType : 'json'
+        }).done(function(data) {
+            console.log("success. clear all input fields");
+            clearInputFields();
+            var out = parseResponse(data);
+            $("#res").html(out);
+        }).fail(function(xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status + " " + xhr.message + " " + thrownError);
+            $("#res").html("No Response" + thrownError);
+        });
+
+    }
+
+    function addNew() {
+        // Data that will be sent as a POST request to the server
+        // You must post data as string so it must be JSON.stringify before sending it to the server
+        var newStudent = JSON.stringify({ name : $("#name").val(), course : $("#course").val(), grade : $("#grade").val()  });
+        $.ajax({
+            type : 'POST',
+            url : postUrl,
+            contentType : "application/json",
+            data: newStudent,
+            dataType : 'json'
+        }).done(function(data) {
+            console.log("success. clear all input fields");
+            clearInputFields();
+            $("#res").html(data.message);
+        }).fail(function(xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status + " " + xhr.message + " " + thrownError);
+            $("#res").html("No Response" + thrownError);
+        });
+    }
+
+
+    function update() {
+        // Data that will be sent as a PUT request to the server when updated
+        var newStudent = JSON.stringify({ name : $("#name").val(), course : $("#course").val(), grade : $("#grade").val()  });
+        $.ajax({
+            type : 'PUT',
+            url : putUrl + "/" + $("#id").val(), // append id parameter to the dynamic URL
+            contentType : "application/json",
+            data: newStudent,
+            dataType : 'json'
+        }).done(function(data) {
+            console.log("success. clear all input fields" + data.message);
+            clearInputFields();
+            $("#res").html(data.message);
+        }).fail(function(xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status + " " + xhr.message + " " + thrownError);
+            $("#res").html("No Response" + thrownError);
+        });
+    }
+
+    function remove() {
+        // Data that will be sent as a DELETE request to the server when deleted
+        $.ajax({
+            type : 'DELETE',
+            url : deleteUrl + "/" + $("#id").val(), // append id parameter to the dynamic URL
+            contentType : "application/json",
+            data: {},
+            dataType : 'json'
+        }).done(function(data) {
+            console.log("success. clear all input fields");
+            clearInputFields();
+            $("#res").html(data.message);
+        }).fail(function(xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status + " " + xhr.message + " " + thrownError);
+            $("#res").html("No Response" + thrownError);
+        });
+    }
+
+
+    function parseResponse(data) {
+        console.log("data" + data);
+        //var arr = JSON.parse(data);
+        var arr = data;
+        var out = "<table border=2>\n";
+        out += "<tr><td>id</td><td>name</td><td>course</td><td>grade</td></tr>\n";
+
+        $.each(arr, function(index, row) {
+            out += "<tr><td>" + row.id + "</td><td>" + row.name + "</td><td>"
+                + row.course + "</td><td>"
+                + row.grade + "</td></tr>";
+        });
+        out += "</table>\n";
+        return out;
+    }
+
+    // Clearing all input fields in the form
+    function clearInputFields() {
+         $("input[type='text'],select,input[type='password']", $('form')).each(function() {
+            console.log($(this).val());
+           $(this).val("");
+        });
+    }
+
+    // Check that there is some value of each mandatory input field before sending data to the server
+    function isFieldsEmpty(checkedInputFields) {
+        var isEmpty = false;
+        checkedInputFields.each(function() {
+            if($(this).val().trim() == "") isEmpty = true; 
+            console.log("check.... '" + $(this).val().trim() + "'");
+        });
+        return isEmpty; 
+    };
+
+    function clearAll() {
+        $("#res").html("CLEARED...");
+    }
+
+    // When the form is submitted all data has been saved
+    $("#loadButton").click(function(e) {
+        console.log("load")
+        getAll();
+    });
+     $("#addButton").click(function(e) {
+        if (!isFieldsEmpty($("#name,#course,#grade"))) {
+            addNew();
+            console.log("addNew")
+        }
+        else {
+            $("#res").html("Add Error. Fill All fields!");
+        }
+        
+    });
+     $("#searchButton").click(function(e) {
+        if (!isFieldsEmpty($("#courseSearch"))) {
+            searchByCourseName();
+            console.log("searchByCourseName")
+        }
+        else {
+            $("#res").html("Search Error. Fill Search field!");
+        }        
+    });
+ 
+    $("#clearButton").click(function(e) {
+        clearAll();
+        console.log("clear")
+    });
+
+    $("#updateButton").click(function(e) {
+        if (!isFieldsEmpty($("#name,#course,#grade,#id"))) {
+            update();
+            console.log("update")
+        }
+        else {
+            $("#res").html("Update Error. Fill All fields!");
+        }
+        
+    });
+    $("#deleteButton").click(function(e) {
+        if (!isFieldsEmpty($("#id"))) {
+            remove();
+        }
+        else {
+            $("#res").html("Delete Error. Fill Id field!");
+        }        
+
+    }); 
+});
+</script>
+
+</head>
+
+<body>
+    <h1>Student grades - jQuery REST Client Demo</h1>
+    <div id="res"></div>
+    <div>
+    <span name="loadButton" class="button" id="loadButton">Load</span>
+    <span id="clearButton" class="button" >Clear</span>
+    <span id="addButton" class="button" >Add New Student</span>
+    <span id="updateButton" class="button" >Update Student</span>
+    <span id="deleteButton" class="button" >Delete Student</span>
+    <span id="searchButton" class="button" >Search by course name</span>
+    </div>
+   
+   <h3>Give the student details</h3>
+   <form>
+        Name<input type="text" id="name" required />
+        Course<input type="text" id="course" required />
+        Grade<input type="text" id="grade" required />
+        <div>Update/Delete with id</div>
+        id<input type="text" id="id" required />
+
+        <div>Search by Course name</div>
+        Course<input type="text" id="courseSearch" required />
+    </form>
+
+</body>
+</html>

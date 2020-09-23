@@ -1,0 +1,26 @@
+head
+    title= title
+    body
+        h1= message
+
+    p #{articles[0].text}
+    p #{articles[1].text}
+    p #{articles[2].text}
+    p #{articles[3].text}
+
+    h2 Looping through all text
+
+    div
+        h3 Blog #{articles[i].id}. #{articles[i].title} 
+        div 
+            #{articles[i].text}
+
+    p
+        span
+            a(href='/') Home ~ 
+        span
+            a(href='about') About ~ 
+        span
+            a(href='test') Test ~ 
+        span
+            a(href='blog') show all blogs

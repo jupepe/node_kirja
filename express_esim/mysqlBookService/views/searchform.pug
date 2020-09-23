@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    h1 search book from the MySQL database by name
+    form(id='book-form', method='POST', action='/book')
+        .form-group
+          label(for='searchname') Search name
+          input(type='text', name='searchname', class='form-item', id='searchname', placeholder='search name')
+        .form-group
+          button Search  
+    a(href="/books") All books
+

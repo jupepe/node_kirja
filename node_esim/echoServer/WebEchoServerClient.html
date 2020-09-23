@@ -1,0 +1,38 @@
+<html>
+<body>
+<form method="post" action="http://localhost:3000">
+    Data:
+    <input type="text" name="data"/>
+    <input type="submit" value="Submit"/>
+</form>
+
+<script type="text/JavaScript">
+    console.log('begin')
+    const http = new XMLHttpRequest()
+    const params = "data=hello-from-ajax"
+    http.open("POST", "http://localhost:3000", true)
+
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+
+    http.onreadystatechange = () => {
+        console.log('onreadystatechange')
+        if (http.readyState == 4 && http.status == 200) {
+            console.log('response: readyState=' + http.readyState + ', status: ' + http.status
+                + ", text: " + removeNewlines(http.responseText))
+            alert(http.responseText)
+        } else {
+            console.log('response: readyState=' + http.readyState + ', status: ' + http.status)
+        }
+    }
+
+    console.log('sending data')
+    http.send(params)
+    console.log('end')
+
+    // removes newlines and convert newlines to one space
+    const removeNewlines = (x) => {
+        return x.replace(/\n+|\r+/gm, ' ')
+    }
+
+</script>
+</body>

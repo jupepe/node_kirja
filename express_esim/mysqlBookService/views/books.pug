@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 show books
+  p Books read from the MySQL database
+    table(border=1)
+        each book in books
+            tr
+                td=book.name            
+                td=book.price
+                td=book.authors
+  a(href="/searchform") Search books

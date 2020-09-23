@@ -1,0 +1,19 @@
+doctype 5
+html
+  head
+    title Session Demo
+  body
+      h1  Session Demo
+      hr
+      form(id='login-form', method='POST', action='/')
+          input(type='text', name='name',  , class='form-item', id='username', placeholder='Enter username')
+          button(type="submit", value="save") Save User
+      if sessionName 
+          div Your name from session is #{sessionName}
+          div Last visited page is #{sessionPage}
+          div Visit times in this page is #{sessionVisited}
+
+      a(href="sessiondelete") Or Delete All Session Data
+
+
+

@@ -1,0 +1,9 @@
+Callback is an asynchronous function. 
+A callback function is called when given task has been completed. 
+Node uses lot of callbacks and so you have to know these. 
+All Node APIs are written so that they supports callbacks.
+With callbacks there is no blocking or wait for any I/O operation
+Example: function start reading file and immidiately executes next instruction. Once file has been reader, it will call the callback with content as a parameter.
+In CPS, a "continuation function" (read: "callback") is passed as an argument to be called once the rest of that code has been run.
+The error-first pattern was introduced into Node core to solve problem of different callback signatures
+error first callback: The first argument of the callback is reserved for an error object. The second argument of the callback is reserved for any successful response data.

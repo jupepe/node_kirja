@@ -1,0 +1,32 @@
+head
+    title= title
+    body
+        h1= message
+
+    p #{articles[0].text}
+    p #{articles[1].text}
+    p #{articles[2].text}
+    p #{articles[3].text}
+
+    h2 Looping through all text
+
+    each value, index in {1:'uno',2:'due',3:'tre'}
+        div= index + ': ' + value
+
+    div
+        each article in articles
+            h3 Blog #{article.id}. #{article.title} 
+            ul 
+                li #{article.text}
+                li 
+                    a(href='/article/' + article.id) view this blog
+
+    p
+        span
+            a(href='/') Home ~ 
+        span
+            a(href='about') About ~ 
+        span
+            a(href='test') Test ~ 
+        span
+            a(href='blog') show blog
